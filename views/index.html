@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Video Quality Comparision Tool</title>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+<!-- jQuery Modal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+<script src='js/html2canvas.min.js'></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=News+Cycle" rel="stylesheet">
+      <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="header">
+        <h4>Video Split View</h4>
+    </div>
+    <div class="splitview skewed" id="vcontent">
+
+        <div class="panel bottom">
+            <div class="content">
+                <div class="container">
+                    <video controls crossorigin id="vidR">
+                      <source src="" type="video/mp4" id="vidSrcR">
+                    </video>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="panel top">
+            <div class="content">
+                <div class="container">
+                    <video controls crossorigin id="vidL">
+                        <source src="" type="video/mp4" id="vidSrcL">
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <div class="handle" ondragenter="dragHandle(event)"></div>
+
+        <div id="mediainfoL">
+
+        </div>
+
+        <div id="mediainfoR">
+
+        </div>
+
+    </div>
+
+    <div id="videoControls">
+        <div class="buttons">
+            <div class="btn-wrapper">
+                <i class="fa fa-play" aria-hidden="true" onclick="playVid()" id="btn-play"></i>
+            </div>
+            <div class="btn-wrapper">
+                <i class="fa fa-pause" aria-hidden="true"  onclick="pauseVid()" id="btn-pause"></i>
+            </div>
+
+        </div>
+    </div>
+
+    <!--Controls Ends-->
+
+<!--Inputs-->
+    <div id="inputs">
+        <input type="text" id="sourceL" class="txt" />
+        <input type="text" id="sourceR" class="txt" />
+    </div>
+
+    <div class="input-selectL">
+        <i class="fas fa-film" id="selectL"></i>
+    </div>
+    <div class="input-selectR">
+        <i class="fas fa-film" id="selectR"></i>
+    </div>
+
+    <div class="hid">
+        <form method="POST" enctype="multipart/form-data" id="fileUploadLForm">
+            <input type="file" name="file_uploadL" id="file_uploadL"/>
+        </form>
+
+        <form method="POST" enctype="multipart/form-data" id="fileUploadRForm">
+            <input type="file" name="file_uploadR" id="file_uploadR"/>
+        </form>
+        <!--<div id="dwn">
+            HHH
+        </div>-->
+
+    </div>
+
+<!--Screenshot-->
+<!-- Modal HTML embedded directly into document -->
+<div id="ex1" class="modal">
+  <div id="modal_prv"></div>
+  <div id="dwn_link"></div>
+  <!--<a href="#" rel="modal:close">Close</a>-->
+</div>
+
+<!-- Link to open the modal -->
+<p><a id="modal_open" href="#ex1" rel="modal:open"></a></p>
+
+<div class="screenshot-wrapper">
+        <i class="fa fa-camera" aria-hidden="true" id="screenshot"></i>
+</div>
+
+
+<!--Inputs Ends-->
+    <script  src="js/index.js"></script>
+    <script>
+
+    $(document).ready(function(e) {
+            $("#selectL").click(function(){
+    			$("#file_uploadL").trigger('click');
+    		});
+            $("#selectR").click(function(){
+                $("#file_uploadR").trigger('click');
+            });
+
+            $("#screenshot").click (function (event){
+                /*
+                var elemt = $("#vcontent")[0]
+                html2canvas(elemt).then(function(canvas) {
+                    var img    = canvas.toDataURL("image/png");
+                    var dwn = '<a id="dwn_link" href="'+img+'" download="img.png">Download</a>';
+                    $("#modal_prv").html('<img src="'+img+'"/>');
+                    $("#dwn").html(dwn);
+
+                    setTimeout(function(){
+                        $("#modal_open").trigger('click');
+                        console.log('timer');
+                    }, 2000);
+                });
+                */
+
+                $.ajax({
+                    type: "GET",
+                    url: "/scrnshot",
+                    success: function (data) {
+                        console.log("SUCCESS : ", data);
+                        setTimeout(function(){
+                            var dwn_link = '<a href="screenshots/'+data+'" download="'+data+'">Download</a>';
+                            $("#dwn_link").html(dwn_link)
+                            $("#modal_prv").html('<img src="screenshots/'+data+'"/>');
+                        }, 1000);
+                        setTimeout(function(){
+                            $("#modal_open").trigger('click');
+                            console.log('timer');
+                        }, 1000);
+                    },
+                    error: function (e) {
+                        console.log("ERROR : ", e);
+                    }
+                });
+
+
+            })
+
+
+        });
+
+
+
+
+$("#file_uploadL").change(function (event) {
+    console.log('KKK');
+
+    var form = $('#fileUploadLForm')[0];
+
+		// Create an FormData object
+        var data = new FormData(form);
+
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "/upload/L",
+            data: data,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+                console.log("SUCCESS : ", data);
+                formatMediaInfo(data,'L')
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+
+})
+
+$(document).on("change", "#file_uploadL", function(evt) {
+  var $source = $('#vidSrcL');
+  $source[0].src = URL.createObjectURL(this.files[0]);
+  $source.parent()[0].load();
+});
+
+$(document).on("change", "#file_uploadR", function(evt) {
+  var $source = $('#vidSrcR');
+  $source[0].src = URL.createObjectURL(this.files[0]);
+  $source.parent()[0].load();
+});
+
+function formatMediaInfo(data,side){
+    //console.log('data',data);
+    var pretty_op = "<ul>"+
+                        "<li>Codec : "+
+                        data.video[0].Format[0]+
+                        "</li>"+
+                        "<li>Width : "+
+                        data.video[0].Width[0]+
+                        "</li>"+
+                        "<li>Height : "+
+                        data.video[0].Height[0]+
+                        "</li>"+
+                        "<li>Bitrate : "+
+                        data.general[0]['Overall bit rate'][0]+
+                        "</li>"+
+                        "<li>Duration : "+
+                        data.general[0]['Duration'][0]+
+                        "</li>"+
+                    "</ul>";
+    if (side=="R") {
+        $("#mediainfoR").html(pretty_op);
+    }
+
+    if (side=="L") {
+        $("#mediainfoL").html(pretty_op);
+    }
+    console.log('pretty_op',pretty_op);
+}
+
+$("#file_uploadR").change(function (event) {
+
+        var form = $('#fileUploadRForm')[0];
+        var data = new FormData(form);
+
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "/upload/R",
+            data: data,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+                console.log("SUCCESS : ", data);
+                formatMediaInfo(data,'R')
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+            }
+        });
+
+})
+
+
+    </script>
+
+</body>
+</html>

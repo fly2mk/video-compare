@@ -1,0 +1,319 @@
+/* Reset. */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 100%;
+    font-family: 'Open Sans', sans-serif;
+    background: #000;
+}
+
+ul{
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    list-style-type: none;
+}
+
+div#header {
+    padding: 7px 4px 0px 4px;
+    background: #000;
+    color: #FFF;
+}
+
+div#header img {
+    width: 10%;
+    float: left;
+}
+
+div#header h4{
+    font-size: 20px;
+    margin: 0 0 0 45%;
+    font-family: 'News Cycle', sans-serif;
+    padding: 0;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+/* Panels. */
+.splitview {
+    position: relative;
+    width: 100%;
+    /*min-height: 45vw;*/
+    min-height: 45vw;
+    overflow: hidden;
+}
+
+.panel {
+    position: absolute;
+    width: 100vw;
+    min-height: 45vw;
+    overflow: hidden;
+}
+
+    .panel .content {
+        position: absolute;
+        width: 100vw;
+        min-height: 45vw;
+        color: #FFF;
+    }
+
+    .panel .description {
+        width: 25%;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        text-align: center;
+    }
+
+    /*
+    .panel img, .panel video {
+        box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    */
+    .panel img, .panel video {
+        /*box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0.15);*/
+        width: 100%;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin-top:360px;
+    }
+
+.bottom {
+    background-color: rgb(44, 44, 44);
+    z-index: 1;
+}
+
+    .bottom .description {
+        right: 5%;
+    }
+
+.top {
+    /*background-color: rgb(77, 69, 173);*/
+    z-index: 2;
+    width: 50vw;
+
+    /*-webkit-clip-path: polygon(60% 0, 100% 0, 100% 100%, 40% 100%);
+    clip-path: polygon(60% 0, 100% 0, 100% 100%, 40% 100%);*/
+}
+
+    .top .description {
+        left: 5%;
+    }
+
+/* Handle. */
+.handle {
+    height: 100%;
+    position: absolute;
+    display: block;
+    background-color: rgb(255, 255, 255);
+    opacity: 0.4;
+    width: 1px;
+    top: 0;
+    left: 50%;
+    z-index: 3;
+}
+
+/* Skewed. */
+.skewed .handle {
+    top: 50%;
+    transform: rotate(0deg) translateY(-50%);
+    height: 200%;
+    -webkit-transform-origin: top;
+    -moz-transform-origin: top;
+    transform-origin: top;
+}
+
+.skewed .top {
+    /*transform: skew(-30deg);*/
+    margin-left: -1000px;
+    width: calc(50vw + 1000px);
+}
+
+.skewed .top .content {
+    /*transform: skew(30deg);*/
+    margin-left: 1000px;
+}
+
+#vcontrols{
+
+}
+
+.plyr__controls{
+    display: none;
+}
+
+#videoControls{
+/*    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 7;
+    outline: 0; */
+}
+
+#inputs input[type="text"]{
+    height: 30px;
+    width: 75%;
+    margin-top: 1%;
+}
+
+button.change:hover {
+cursor: pointer;
+background-color: #F89900;
+}
+
+button:active {
+outline: none;
+border: none;
+}
+
+
+.plyr__video-wrapper {
+    position: relative;
+    background: #000;
+    border-radius: inherit;
+    -webkit-mask-image: none;
+}
+
+/*#videoControls button {width: 40px; height: 40px; border-radius: 50%; display: inline-block}
+ .first {display: none;}*/
+#videoControls .buttons {
+    margin-top: 10px;
+    /*width: 320px;*/
+    text-align: center;
+}
+
+button:focus {outline:0;}
+
+/* Responsive. */
+@media (max-width: 900px) {
+    body {
+        font-size: 75%;
+    }
+}
+
+
+*::-webkit-media-controls-panel {
+  display: none!important;
+  -webkit-appearance: none;
+}
+
+/* Old shadow dom for play button */
+
+*::-webkit-media-controls-play-button {
+  display: none!important;
+  -webkit-appearance: none;
+}
+
+/* New shadow dom for play button */
+
+/* This one works! */
+
+*::-webkit-media-controls-start-playback-button {
+  display: none!important;
+  -webkit-appearance: none;
+}
+
+
+#mediainfoL, #mediainfoR{
+    width: 158px;
+    background-color: #10101066;
+    position: absolute;
+    z-index: 5;
+    border-radius: 17px;
+    top: 50px;
+}
+
+#mediainfoL{
+    left: 30px;
+}
+
+#mediainfoR{
+    right: 30px;
+}
+
+#mediainfoL ul, #mediainfoR ul{
+    padding: 15px 5px 15px 25px;
+    color: #fff;
+    font-size: 12px;
+}
+
+#inputs{
+    display: none;
+}
+.input-selectL{
+    float: left;
+}
+.input-selectR{
+    float: left;
+}
+.input-selectL, .input-selectR{
+        width: 50%;
+        text-align: center;
+        margin-top: -27px;
+}
+
+.fa, .fas {
+    font-weight: 900;
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.screenshot-wrapper{
+    position: fixed;
+    right: 5%;
+    bottom: 18%;
+    z-index: 10;
+    opacity: 0.6;
+}
+.modal{
+    position: absolute;
+    left: 13%;
+    max-width: 71%;
+    z-index: 11;
+}
+.modal #modal_prv img{
+
+    height: 600px;
+}
+.blocker{
+    z-index: 11;
+}
+.hid{
+    display: none;
+}
+
+div#dwn_link {
+    float: right;
+}
+
+#dwn_link a {
+    color: #000;
+    text-align: right;
+}
+
+#btn-pause{
+    display: none;
+}
+
+.fa-film{
+    color: #fff;
+    opacity: 0.4;
+}
+
+.input-selectL .fa-film:hover, .input-selectR .fa-film:hover, .screenshot-wrapper:hover{
+    opacity: 0.9;
+}

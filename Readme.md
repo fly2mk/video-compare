@@ -11,16 +11,10 @@ For Dockerized version
 3. docker run -p 3000:3000 -d ots/split_view
 
 
-
-
 For Non Dockerized Version
 ----------------------------
-1. Please install Node JS
-2. brew install npm
-3. sudo npm install
-4. sudo npm install -g nodemon
-5. nodemon
-
-Your app will be listening on 3000. Port no. can be changed at /bin/www line no 15
-
-Goto http://localhost:3000/ on your browser.
+1. sudo npm install -g nodemon
+2. sudo npm install
+3. nodemon [to run the app]
+Your app will be listening on 4000. Port no. can be changed at /bin/www line no 15
+Goto http://localhost:4000/ on your browser.
